@@ -94,14 +94,22 @@ export const Psicologo = () => {
 
 
   const champSeleccionado = (e) => {
-    console.log(e)
-    navigate('/champ/' + e.idChamp,
-      {
-        state: {
-          nombre: e.nombres,
-          apellido: e.apellidos,
-        }
-      });
+      console.log(e)
+      navigate('/champ/' + e.idChamp,
+        {
+          state: {
+            nombre: e.nombres,
+            apellido: e.apellidos,
+            dni: e.dni,
+            grado: e.grado,
+            sede: e.sede,
+            estado: e.estado,
+            correo1: e.correo1,
+            correo2: e.correo2,
+            celular1: e.celular1,
+            celular2: e.celular2
+          }
+        });
   }
 
 
