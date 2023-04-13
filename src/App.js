@@ -12,7 +12,7 @@ function App() {
   return (
     <Router>
       <Navbar className='contenedor_nav' collapseOnSelect expand="lg" bg="dark" variant="dark">
-          <Navbar.Brand href="/General">
+          <Navbar.Brand href="/">
             <img
               alt="logo"
               src={logo}
@@ -25,14 +25,14 @@ function App() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/general">General</Nav.Link>
+              <Nav.Link href="/">General</Nav.Link>
               <NavDropdown title="Psicologos" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="/psicologo/Darwin">Darwin</NavDropdown.Item>
                 <NavDropdown.Item href="/psicologo/Sayu">Sayu</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="/general">Ayuda</Nav.Link>
+              <Nav.Link href="/">Ayuda</Nav.Link>
             </Nav>
           </Navbar.Collapse>
       </Navbar>
