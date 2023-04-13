@@ -25,14 +25,14 @@ function App() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="/General">General</Nav.Link>
+              <Nav.Link href="/general">General</Nav.Link>
               <NavDropdown title="Psicologos" id="collasible-nav-dropdown">
-                <NavDropdown.Item href="/Psicologo/Darwin">Darwin</NavDropdown.Item>
-                <NavDropdown.Item href="/Psicologo/Sayu">Sayu</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Darwin">Darwin</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Sayu">Sayu</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="/General">Ayuda</Nav.Link>
+              <Nav.Link href="/general">Ayuda</Nav.Link>
             </Nav>
           </Navbar.Collapse>
       </Navbar>
