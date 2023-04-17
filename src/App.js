@@ -28,7 +28,12 @@ function App() {
               <Nav.Link href="/">General</Nav.Link>
               <NavDropdown title="Psicologos" id="collasible-nav-dropdown">
                 <NavDropdown.Item href="/psicologo/Darwin">Darwin</NavDropdown.Item>
-                <NavDropdown.Item href="/psicologo/Sayu">Sayu</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Macarena">Macarena</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Sofia">Sofia</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Vale C">Vale C</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Valentina">Valentina</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Valeria R">Valeria R</NavDropdown.Item>
+                <NavDropdown.Item href="/psicologo/Valeria Velit">Valeria Velit</NavDropdown.Item>
               </NavDropdown>
             </Nav>
             <Nav>
