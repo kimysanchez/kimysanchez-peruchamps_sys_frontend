@@ -40,7 +40,13 @@ export const Psicologo = () => {
   ]
   const psicologos = [
     { value: "Darwin", label: "Darwin" },
-    { value: "Sayu", label: "Sayu" }
+    { value: "Sayu", label: "Sayu" },
+    { value: "Macarena", label: "Macarena" },
+    { value: "Sofia", label: "Sofia" },
+    { value: "Vale C", label: "Vale C" },
+    { value: "Valentina", label: "Valentina" },
+    { value: "Valeria R", label: "Valeria R" },
+    { value: "Valeria Velit", label: "Valeria Velit" }
   ];
   const nivelesRiesgo = [
     { value: "BAJO", label: "BAJO" },
