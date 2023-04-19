@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom';
 import { Spinner, Button, Form, Modal } from 'react-bootstrap';
-
+import Card from 'react-bootstrap/Card';
+import ListGroup from 'react-bootstrap/ListGroup';
 
 export const Champ = () => {
 
@@ -10,32 +11,44 @@ export const Champ = () => {
   const urlAñadirIntervencion = "https://peruchamps-sys-backend.onrender.com/insertarIntervencion/" + idChamp;
   const urlEditarIntervencion = "https://peruchamps-sys-backend.onrender.com/editarIntervencion/";
   const urlEliminarIntervencion = "https://peruchamps-sys-backend.onrender.com/eliminarIntervencion/";
+  const urlEditarSeguimiento = "https://peruchamps-sys-backend.onrender.com/editarSeguimiento/";
 
   const [datosLoad, setDatosLoad] = useState(false);
   const [loadAñadir, setLoadAñadir] = useState(false);
   const [loadEditar, setLoadEditar] = useState(false);
   const [loadEliminar, setLoadEliminar] = useState(false);
+  const [loadEditarSeg, setLoadEditarSeg] = useState(false);
 
   const [intervenciones, setIntervenciones] = useState([]);
   const location = useLocation();
 
-  const [modalAñadir, setModalAñadir] = useState(false);
-  const closeModalAñadir = () => setModalAñadir(false);
-  const showModalAñadir = () => setModalAñadir(true);
-  const [modalEditar, setModalEditar] = useState(false);
-  const closeModalEditar = () => setModalEditar(false);
-  const showModalEditar = () => setModalEditar(true);
-  const [modalEliminar, setModalEliminar] = useState(false);
-  const closeModalEliminar = () => setModalEliminar(false);
-  const showModalEliminar = (interv) => { setModalEliminar(true); setIdIntervencion(interv); }
 
+  const [modalEditarSeg, setModalEditarSeg] = useState(false);
+  const showModalEditarSeg = () => setModalEditarSeg(true);
+  const closeModalEditarSeg = () => setModalEditarSeg(false);
+  const [modalAñadir, setModalAñadir] = useState(false);
+  const showModalAñadir = () => setModalAñadir(true);
+  const closeModalAñadir = () => setModalAñadir(false);
+  const [modalEditar, setModalEditar] = useState(false);
+  const showModalEditar = () => setModalEditar(true);
+  const closeModalEditar = () => setModalEditar(false);
+  const [modalEliminar, setModalEliminar] = useState(false);
+  const showModalEliminar = (interv) => { setModalEliminar(true); setIdIntervencion(interv); }
+  const closeModalEliminar = () => setModalEliminar(false);
+
+
+  const [idIntervencion, setIdIntervencion] = useState('');
   const [fechaSelec, setFechaSelec] = useState('');
   const [motivo1Selec, setMotivo1Selec] = useState('');
   const [motivo2Selec, setMotivo2Selec] = useState('');
   const [informacionSelec, setInformacionSelec] = useState('');
   const [acuerdoSelec, setAcuerdoSelec] = useState('');
   const [psicologoSelec, setPsicologoSelec] = useState('');
-  const [idIntervencion, setIdIntervencion] = useState('');
+  const [nrAcademicoSelec, setNRAcademicoSelec] = useState('');
+  const [nrGeneralSelec, setNRGeneralSelec] = useState('');
+  const [nrExtraSelec, setNRExtraSelec] = useState('');
+  const [protocoloSelec, setProtocoloSelec] = useState('');
+  const [descripcionSelec, setDescripcionSelec] = useState('');
 
   const [fecha, setFecha] = useState('');
   const [motivo1, setMotivo1] = useState('');
@@ -43,8 +56,17 @@ export const Champ = () => {
   const [informacion, setInformacion] = useState('');
   const [acuerdo, setAcuerdo] = useState('');
   const [psicologo, setPsicologo] = useState('');
+  const [nrAcademico, setNRAcademico] = useState(location.state.riesgoAcademico);
+  const [nrGeneral, setNRGeneral] = useState(location.state.riesgoEmocional);
+  const [nrExtra, setNRExtra] = useState(location.state.nivelRiesgo);
+  const [protocolo, setProtocolo] = useState(location.state.protocolo);
+  const [descripcion, setDescripcion] = useState(location.state.descripcionCaso);
 
-
+  const nivelesRiesgo = [
+    { value: "BAJO", label: "BAJO" },
+    { value: "MEDIO", label: "MEDIO" },
+    { value: "ALTO", label: "ALTO" }
+  ];
   const psicologos = [
     { value: "Darwin", label: "Darwin" },
     { value: "Sayu", label: "Sayu" },
@@ -115,6 +137,47 @@ export const Champ = () => {
     listarIntervenciones();
   }
 
+  const editarSeguimiento = async (e) => {
+    setLoadEditarSeg(true);
+    e.preventDefault();
+    console.log(nrAcademicoSelec,nrGeneralSelec, nrExtraSelec,protocoloSelec, descripcionSelec);
+    const response = await fetch(urlEditarSeguimiento + idChamp, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      mode: 'cors',
+      body: JSON.stringify({
+        riesgoAcademico: nrAcademicoSelec,
+        riesgoEmocional: nrGeneralSelec,
+        nivelRiesgo: nrExtraSelec,
+        protocolo: protocoloSelec,
+        descripcionCaso: descripcionSelec,
+      })
+
+    })
+    const datos = await response.json();
+    console.log(datos);
+    closeModalEditarSeg();
+    setLoadEditarSeg(false);
+    setNRAcademico(nrAcademicoSelec);
+    setNRGeneral(nrGeneralSelec);
+    setNRExtra(nrExtraSelec);
+    setProtocolo(protocoloSelec);
+    setDescripcion(descripcionSelec);
+  }
+
+  function mostrarSeguimiento(){
+    setNRAcademicoSelec(nrAcademico);
+    setNRGeneralSelec(nrGeneral);
+    setNRExtraSelec(nrExtra);
+    setProtocoloSelec(protocolo);
+    setDescripcionSelec(descripcion);
+    showModalEditarSeg();
+  }
+
+
   function mostrarIntervencion(interv) {
     console.log(interv);
     let timeStamp = Date.parse(interv.fecha.toString())
@@ -180,28 +243,64 @@ export const Champ = () => {
       <h3 className='titulo'>{location.state.nombre} {location.state.apellido}</h3>
       <div className='cuerpo'>
         <div className="row">
-          <div className="col-6">
-            <div className="card">
-              <div className="card-body">DNI: {location.state.dni}</div>
-              <div className="card-body">Grado: {location.state.grado}</div>
-              <div className="card-body">Sede: {location.state.sede}</div>
-              <div className="card-body">Estado: {location.state.estado}</div>
-            </div>
+          <div className="col-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>Datos del Champ</Card.Title>
+                <br></br>
+                <Card.Text>DNI: {location.state.dni}</Card.Text>
+                <Card.Text>Grado: {location.state.grado}</Card.Text>
+                <Card.Text>Region: {location.state.region}</Card.Text>
+                <Card.Text>Sede: {location.state.sede}</Card.Text>
+                <Card.Text>Estado: {location.state.estado}</Card.Text>
+                <Card.Text>Cantera: {location.state.cantera}</Card.Text>
+                {location.state.donante ? (<Card.Text>Donante: {location.state.donante}</Card.Text>) : (<></>)}
+              </Card.Body>
+            </Card>
           </div>
-          <div className="col-6">
-            <div className="card">
-              <div className="card-body">Correo 1: {location.state.correo1}</div>
-              <div className="card-body">Correo 2: {location.state.correo2}</div>
-              <div className="card-body">Celular 1: {location.state.celular1}</div>
-              <div className="card-body">Celular 2: {location.state.celular2}</div>
-            </div>
+          <div className="col-4">
+            <Card>
+              <Card.Body>
+                <Card.Title>Datos del Representante</Card.Title>
+                <br></br>
+                <Card.Text>Datos Mamá: {location.state.dniMama} - {location.state.nombreMama}</Card.Text>
+                <Card.Text>Datos Papá: {location.state.dniPapa} - {location.state.nombrePapa}</Card.Text>
+                <Card.Text>Correo 1: {location.state.correo1}</Card.Text>
+                <Card.Text>Correo 2: {location.state.correo2}</Card.Text>
+                <Card.Text>Celular 1: {location.state.celular1}</Card.Text>
+                <Card.Text>Celular 2: {location.state.celular2}</Card.Text>
+              </Card.Body>
+            </Card>
+          </div>
+          <div className="col-4">
+            <Card>
+              <Card.Body>
+                <div className='intervenciones  mb-3'>
+                <Card.Title>Datos Seguimiento</Card.Title>
+                <Button variant="secondary" onClick={() => mostrarSeguimiento()}>
+                  Editar
+                </Button>
+                </div>
+                <Card.Text>Psicologo: {location.state.psicologo}</Card.Text>
+                <Card.Text>NR Académico: {nrAcademico}</Card.Text>
+                <Card.Text>NR General: {nrGeneral}</Card.Text>
+                <Card.Text>NR Extra: {nrExtra}</Card.Text>
+                <Card.Text>Protocolo: {protocolo}</Card.Text>
+                <Card.Text>Descripcion caso: {descripcion}</Card.Text>
+              </Card.Body>
+            </Card>
           </div>
         </div>
         <div className="intervenciones  mt-4">
           <h4 className='mt-4'>Intervenciones</h4>
-          <Button className='botonInterv' variant="primary" onClick={showModalAñadir}>
-            Añadir intervencion
-          </Button>
+          <div>
+            <Button className='botonInterv botonCC' variant="primary" target="_blank" href={location.state.linkCC}>
+              Ver Carta Compromiso
+            </Button>
+            <Button className='botonInterv' variant="primary" onClick={showModalAñadir}>
+              Añadir intervencion
+            </Button>
+          </div>
         </div>
 
         {
@@ -295,18 +394,17 @@ export const Champ = () => {
             <Button variant="primary" onClick={añadirIntervencion}>
               {loadAñadir ? (
                 <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-              ): (<></>)}
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (<></>)}
               Añadir
             </Button>
           </Modal.Footer>
         </Modal>
-
 
         <Modal show={modalEditar} onHide={closeModalEditar} centered>
           <Modal.Header closeButton>
@@ -350,20 +448,19 @@ export const Champ = () => {
               Cancelar
             </Button>
             <Button variant="primary" onClick={editarIntervencion}>
-            {loadEditar ? (
+              {loadEditar ? (
                 <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-              ): (<></>)}
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (<></>)}
               Guardar
             </Button>
           </Modal.Footer>
         </Modal>
-
 
         <Modal show={modalEliminar} onHide={closeModalEliminar} centered>
           <Modal.Header closeButton>
@@ -377,16 +474,80 @@ export const Champ = () => {
               Cancelar
             </Button>
             <Button variant="primary" onClick={eliminarIntervencion}>
-            {loadEliminar ? (
+              {loadEliminar ? (
                 <Spinner
-                as="span"
-                animation="border"
-                size="sm"
-                role="status"
-                aria-hidden="true"
-              />
-              ): (<></>)}
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (<></>)}
               Eliminar
+            </Button>
+          </Modal.Footer>
+        </Modal>
+
+
+        <Modal show={modalEditarSeg} onHide={closeModalEditarSeg} centered>
+          <Modal.Header closeButton>
+            <Modal.Title>Editar Datos Seguimiento</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Label>NR Académico:</Form.Label>
+                <Form.Select onChange={e => setNRAcademicoSelec(e.target.value)} value={nrAcademicoSelec}>
+                  <option></option>
+                  {nivelesRiesgo.map((psicologo, key) =>
+                    <option key={key}>{psicologo.label}</option>
+                  )}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>NR General:</Form.Label>
+                <Form.Select onChange={e => setNRGeneralSelec(e.target.value)} value={nrGeneralSelec}>
+                  <option></option>
+                  {nivelesRiesgo.map((psicologo, key) =>
+                    <option key={key}>{psicologo.label}</option>
+                  )}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>NR Extra:</Form.Label>
+                <Form.Select onChange={e => setNRExtraSelec(e.target.value)} value={nrExtraSelec}>
+                  <option></option>
+                  {nivelesRiesgo.map((psicologo, key) =>
+                    <option key={key}>{psicologo.label}</option>
+                  )}
+                </Form.Select>
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Protocolo:</Form.Label>
+                <Form.Control type="text" onChange={e => setProtocoloSelec(e.target.value)} value={protocoloSelec} />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Label>Descripción caso:</Form.Label>
+                <Form.Control as="textarea" rows={3} onChange={e => setDescripcionSelec(e.target.value)} value={descripcionSelec} />
+              </Form.Group>
+              
+            </Form>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={closeModalEditarSeg}>
+              Cancelar
+            </Button>
+            <Button variant="primary" onClick={editarSeguimiento}>
+              {loadEditarSeg ? (
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              ) : (<></>)}
+              Guardar
             </Button>
           </Modal.Footer>
         </Modal>

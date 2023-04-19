@@ -74,11 +74,15 @@
 }
 
 .botonInterv{
-  margin: 1rem 0rem;
+  margin: 1rem 0rem 1rem 2rem;
   padding: 0.6rem 2.2rem !important;
   background-color: darkorchid !important;
-  border: none;
+  border: none !important;
   font-weight: 500 !important;
+}
+
+.botonCC{
+  background-color: rgb(201, 201, 201) !important;
 }
 
 .table_center{
@@ -92,3 +96,17 @@
 .eQQdoY{
   font-size: 1rem !important;
 }
+
+.d-flex {
+  justify-content: flex-start;
+}
+
+.select{
+  width: 50% !important;
+}
+
+
+.label{
+  width: 50%;
+}
+
