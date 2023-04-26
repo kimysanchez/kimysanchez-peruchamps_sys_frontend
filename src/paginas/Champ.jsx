@@ -50,12 +50,12 @@ export const Champ = () => {
   const [protocoloSelec, setProtocoloSelec] = useState('');
   const [descripcionSelec, setDescripcionSelec] = useState('');
 
-  const [fecha, setFecha] = useState('');
+  const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 10));
   const [motivo1, setMotivo1] = useState('');
   const [motivo2, setMotivo2] = useState('');
   const [informacion, setInformacion] = useState('');
   const [acuerdo, setAcuerdo] = useState('');
-  const [psicologo, setPsicologo] = useState('');
+  const [psicologo, setPsicologo] = useState(location.state.psicologo);
   const [nrAcademico, setNRAcademico] = useState(location.state.riesgoAcademico);
   const [nrGeneral, setNRGeneral] = useState(location.state.riesgoEmocional);
   const [nrExtra, setNRExtra] = useState(location.state.nivelRiesgo);
@@ -77,6 +77,31 @@ export const Champ = () => {
     { value: "Valeria R", label: "Valeria R" },
     { value: "Valeria Velit", label: "Valeria Velit" }
   ];
+  const motivos1 = [
+    { value: "Otros", label: "Otros" },
+    { value: "Derivación NRA", label: "Derivación NRA" },
+    { value: "Comunicación con IS", label: "Comunicación con IS" },
+    { value: "Carta de compromiso por caso", label: "Carta de compromiso por caso" },
+    { value: "Seguimiento", label: "Seguimiento" },
+    { value: "NR Académico ", label: "NR Académico " },
+    { value: "Reunión con familia", label: "Reunión con familia" }
+  ];
+  const motivos2 = [
+    { value: "Otro", label: "Otro" },
+    { value: "Depresión", label: "Depresión" },
+    { value: "Conductas incongruentes", label: "Conductas incongruentes" },
+    { value: "Duelo", label: "Duelo" },
+    { value: "Violencia sexual, fisica o psicologica", label: "Violencia sexual, fisica o psicologica" },
+    { value: "Efectividad interpersonal", label: "Efectividad interpersonal" },
+    { value: "Familia problematica", label: "Familia problematica" },
+    { value: "Acoso/bullying", label: "Acoso/bullying" },
+    { value: "Desmotivación académica", label: "Desmotivación académica" },
+    { value: "Convivencia familiar", label: "Convivencia familiar" },
+    { value: "Indicadores clínicos", label: "Indicadores clínicos" },
+    { value: "Enfermedad física", label: "Enfermedad física" },
+    { value: "Desregulación emocional", label: "Desregulación emocional" },
+    { value: "Neurodesarrollo (TEA-TDAH)", label: "Neurodesarrollo (TEA-TDAH)" }
+  ];
 
 
   const listarIntervenciones = async () => {
@@ -92,8 +117,6 @@ export const Champ = () => {
     setIntervenciones(datos.intervenciones);
     setDatosLoad(true);
   }
-
-
 
   const eliminarIntervencion = async (e) => {
     setLoadEliminar(true);
@@ -140,7 +163,7 @@ export const Champ = () => {
   const editarSeguimiento = async (e) => {
     setLoadEditarSeg(true);
     e.preventDefault();
-    console.log(nrAcademicoSelec,nrGeneralSelec, nrExtraSelec,protocoloSelec, descripcionSelec);
+    console.log(nrAcademicoSelec, nrGeneralSelec, nrExtraSelec, protocoloSelec, descripcionSelec);
     const response = await fetch(urlEditarSeguimiento + idChamp, {
       method: 'PUT',
       headers: {
@@ -168,7 +191,7 @@ export const Champ = () => {
     setDescripcion(descripcionSelec);
   }
 
-  function mostrarSeguimiento(){
+  function mostrarSeguimiento() {
     setNRAcademicoSelec(nrAcademico);
     setNRGeneralSelec(nrGeneral);
     setNRExtraSelec(nrExtra);
@@ -225,12 +248,12 @@ export const Champ = () => {
     closeModalAñadir();
     setLoadAñadir(false);
     listarIntervenciones();
-    setFecha('');
+    setFecha(new Date().toISOString().slice(0, 10));
     setMotivo1('');
     setMotivo2('');
     setInformacion('');
     setAcuerdo('');
-    setPsicologo('');
+    setPsicologo(location.state.psicologo);
   }
 
   useEffect(() => {
@@ -276,10 +299,10 @@ export const Champ = () => {
             <Card>
               <Card.Body>
                 <div className='intervenciones  mb-3'>
-                <Card.Title>Datos Seguimiento</Card.Title>
-                <Button variant="secondary" onClick={() => mostrarSeguimiento()}>
-                  Editar
-                </Button>
+                  <Card.Title>Datos Seguimiento</Card.Title>
+                  <Button variant="secondary" onClick={() => mostrarSeguimiento()}>
+                    Editar
+                  </Button>
                 </div>
                 <Card.Text>Psicologo: {location.state.psicologo}</Card.Text>
                 <Card.Text>NR Académico: {nrAcademico}</Card.Text>
@@ -362,12 +385,19 @@ export const Champ = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Motivo 1:</Form.Label>
-                <Form.Control type="text" onChange={e => setMotivo1(e.target.value)} value={motivo1} />
+                <Form.Select onChange={(e) => setMotivo1(e.target.value)}>
+                  {motivos1.map((motivo, key) =>
+                    <option key={key}>{motivo.label}</option>
+                  )}
+                </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Motivo 2:</Form.Label>
-                <Form.Control type="text" onChange={e => setMotivo2(e.target.value)} value={motivo2} />
-              </Form.Group>
+                <Form.Select onChange={(e) => setMotivo2(e.target.value)}>
+                  {motivos2.map((motivo, key) =>
+                    <option key={key}>{motivo.label}</option>
+                  )}
+                </Form.Select></Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Información:</Form.Label>
                 <Form.Control as="textarea" rows={3} onChange={e => setInformacion(e.target.value)} value={informacion} />
@@ -381,7 +411,7 @@ export const Champ = () => {
                 <Form.Select onChange={e => setPsicologo(e.target.value)} value={psicologo}>
                   <option>Todos</option>
                   {psicologos.map((psicologo, key) =>
-                    <option key={key}>{psicologo.label}</option>
+                    <option key={key}>{psicologo.label} </option>
                   )}
                 </Form.Select>
               </Form.Group>
@@ -406,6 +436,7 @@ export const Champ = () => {
           </Modal.Footer>
         </Modal>
 
+
         <Modal show={modalEditar} onHide={closeModalEditar} centered>
           <Modal.Header closeButton>
             <Modal.Title>Editar Intervención</Modal.Title>
@@ -418,11 +449,19 @@ export const Champ = () => {
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Motivo 1:</Form.Label>
-                <Form.Control type="text" onChange={e => setMotivo1Selec(e.target.value)} value={motivo1Selec} />
+                <Form.Select onChange={(e) => setMotivo1Selec(e.target.value)} defaultValue={motivo1Selec}>
+                  {motivos1.map((motivo, key) =>
+                    <option key={key}>{motivo.label}</option>
+                  )}
+                </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Motivo 2:</Form.Label>
-                <Form.Control type="text" onChange={e => setMotivo2Selec(e.target.value)} value={motivo2Selec} />
+                <Form.Select onChange={(e) => setMotivo2Selec(e.target.value)} defaultValue={motivo2Selec}>
+                  {motivos2.map((motivo, key) =>
+                    <option key={key}>{motivo.label}</option>
+                  )}
+                </Form.Select>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Información:</Form.Label>
@@ -530,7 +569,7 @@ export const Champ = () => {
                 <Form.Label>Descripción caso:</Form.Label>
                 <Form.Control as="textarea" rows={3} onChange={e => setDescripcionSelec(e.target.value)} value={descripcionSelec} />
               </Form.Group>
-              
+
             </Form>
           </Modal.Body>
           <Modal.Footer>
