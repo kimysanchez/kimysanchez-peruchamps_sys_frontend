@@ -278,18 +278,7 @@ export const General = () => {
                 )}
               </Form.Select>
             </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>NR Extra:</Form.Label>
-              <Form.Select onChange={(e) => filtrarDropDown(e, "nivelRiesgo")}>
-                <option>Todos</option>
-                {nivelesRiesgo.map((nivel, key) =>
-                  <option key={key}>{nivel.label}</option>
-                )}
-              </Form.Select>
-            </Form.Group>
-          </Col>
+          </Col>   
         </Row>
         {
           datosLoad ? (
@@ -311,3 +300,18 @@ export const General = () => {
     </>
   )
 }
+
+
+/*
+<Col>
+  <Form.Group className="mb-3">
+    <Form.Label>NR Extra:</Form.Label>
+    <Form.Select onChange={(e) => filtrarDropDown(e, "nivelRiesgo")}>
+      <option>Todos</option>
+      {nivelesRiesgo.map((nivel, key) =>
+        <option key={key}>{nivel.label}</option>
+      )}
+    </Form.Select>
+  </Form.Group>
+</Col> 
+*/
