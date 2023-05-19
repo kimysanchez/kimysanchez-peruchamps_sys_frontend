@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import { useParams, useLocation } from 'react-router-dom';
 import { Spinner, Button, Form, Modal } from 'react-bootstrap';
 import Card from 'react-bootstrap/Card';
-import ListGroup from 'react-bootstrap/ListGroup';
 
 export const Champ = () => {
 
@@ -51,8 +50,8 @@ export const Champ = () => {
   const [descripcionSelec, setDescripcionSelec] = useState('');
 
   const [fecha, setFecha] = useState(new Date().toISOString().slice(0, 10));
-  const [motivo1, setMotivo1] = useState('');
-  const [motivo2, setMotivo2] = useState('');
+  const [motivo1, setMotivo1] = useState('Otros');
+  const [motivo2, setMotivo2] = useState('Otro');
   const [informacion, setInformacion] = useState('');
   const [acuerdo, setAcuerdo] = useState('');
   const [psicologo, setPsicologo] = useState(location.state.psicologo);
@@ -114,7 +113,7 @@ export const Champ = () => {
       mode: 'cors'
     });
     const datos = await response.json();
-    setIntervenciones(datos.intervenciones);
+    setIntervenciones(datos.intervenciones.sort((a, b) => a.fecha > b.fecha ? 1 : -1));
     setDatosLoad(true);
   }
 
@@ -400,11 +399,13 @@ export const Champ = () => {
                 </Form.Select></Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Información:</Form.Label>
-                <Form.Control as="textarea" rows={3} onChange={e => setInformacion(e.target.value)} value={informacion} />
+                <Form.Control as="textarea"  rows={3} onChange={e => setInformacion(e.target.value)} value={informacion} />
+                <Form.Text>{informacion.length.toLocaleString('en-US',{minimumIntegerDigits:3,useGrouping:false})}/600 caracteres</Form.Text>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Acuerdos:</Form.Label>
                 <Form.Control as="textarea" rows={3} onChange={e => setAcuerdo(e.target.value)} value={acuerdo} />
+                <Form.Text>{acuerdo.length.toLocaleString('en-US',{minimumIntegerDigits:3,useGrouping:false})}/600 caracteres</Form.Text>
               </Form.Group>
               <Form.Group className="mb-3">
                 <Form.Label>Psicologo:</Form.Label>
